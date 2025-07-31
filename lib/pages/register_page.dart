@@ -56,11 +56,21 @@ class RegisterPage extends StatelessWidget {
             CustomButon(
               color: Colors.white,
               onTap: () async {
-                UserCredential user = await FirebaseAuth.instance
-                    .createUserWithEmailAndPassword(
-                      email: ema!,
-                      password: pass!,
-                    );
+                try {
+                  UserCredential user = await FirebaseAuth.instance
+                      .createUserWithEmailAndPassword(
+                        email: ema!,
+                        password: pass!,
+                      );
+                } on FirebaseAuthException catch (e) {
+                  if (e.code == 'weak-password') {
+                    print('The password provided is too weak.');
+                  } else if (e.code == 'email-already-in-use') {
+                    print('The account already exists for that email.');
+                  }
+                } catch (e) {
+                  print(e);
+                }
               },
               text: 'REGISTER',
             ),
