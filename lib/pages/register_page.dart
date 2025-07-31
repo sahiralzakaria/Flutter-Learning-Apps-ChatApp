@@ -9,8 +9,8 @@ class RegisterPage extends StatelessWidget {
 
   static String id = 'RegisterPage';
 
-  String? ema;
-  String? pass;
+  String? email;
+  String? password;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,14 +41,14 @@ class RegisterPage extends StatelessWidget {
             SizedBox(height: 20),
             CustomTextField(
               onChanged: (data) {
-                ema = data;
+                email = data;
               },
               hint: 'Enter Your Name',
             ),
             SizedBox(height: 10),
             CustomTextField(
               onChanged: (data) {
-                pass = data;
+                password = data;
               },
               hint: 'Enter Your Password',
             ),
@@ -57,19 +57,15 @@ class RegisterPage extends StatelessWidget {
               color: Colors.white,
               onTap: () async {
                 try {
-                  UserCredential user = await FirebaseAuth.instance
-                      .createUserWithEmailAndPassword(
-                        email: ema!,
-                        password: pass!,
-                      );
+                  await registerUser();
+
+                  showSnackBar(context, 'Successful');
                 } on FirebaseAuthException catch (e) {
                   if (e.code == 'weak-password') {
-                    print('The password provided is too weak.');
+                    showSnackBar(context, 'weak-password');
                   } else if (e.code == 'email-already-in-use') {
-                    print('The account already exists for that email.');
+                    showSnackBar(context, 'email-already-in-use');
                   }
-                } catch (e) {
-                  print(e);
                 }
               },
               text: 'REGISTER',
@@ -98,5 +94,16 @@ class RegisterPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> registerUser() async {
+    UserCredential user = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email!, password: password!);
+  }
+
+  void showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 }
