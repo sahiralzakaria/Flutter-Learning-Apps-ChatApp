@@ -8,6 +8,7 @@ class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
 
   static String id = 'RegisterPage';
+  GlobalKey<FormState> formKey = GlobalKey();
 
   String? email;
   String? password;
@@ -17,80 +18,91 @@ class RegisterPage extends StatelessWidget {
       backgroundColor: kPrimaryColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(
-          children: [
-            Spacer(flex: 2),
-            Image.asset('assets/images/logo.png', width: 150),
-            Text(
-              'Chat App',
-              style: TextStyle(
-                fontSize: 32,
-                color: Colors.white,
-                fontFamily: 'Playwrite',
-              ),
-            ),
-            Spacer(flex: 2),
-            Row(
-              children: [
-                Text(
-                  'REGISTER',
-                  style: TextStyle(fontSize: 24, color: Colors.white),
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            CustomTextField(
-              onChanged: (data) {
-                email = data;
-              },
-              hint: 'Enter Your Name',
-            ),
-            SizedBox(height: 10),
-            CustomTextField(
-              onChanged: (data) {
-                password = data;
-              },
-              hint: 'Enter Your Password',
-            ),
-            SizedBox(height: 20),
-            CustomButon(
-              color: Colors.white,
-              onTap: () async {
-                try {
-                  await registerUser();
+        child: Form(
+          key: formKey,
+          child: ListView(
+            children: [
+              SizedBox(height: 90),
 
-                  showSnackBar(context, 'Successful');
-                } on FirebaseAuthException catch (e) {
-                  if (e.code == 'weak-password') {
-                    showSnackBar(context, 'weak-password');
-                  } else if (e.code == 'email-already-in-use') {
-                    showSnackBar(context, 'email-already-in-use');
-                  }
-                }
-              },
-              text: 'REGISTER',
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "already have an account ? ",
-                  style: TextStyle(color: Colors.white),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context, RegisterPage.id);
-                  },
-                  child: Text(
-                    'Login',
-                    style: TextStyle(color: Color(0xffade8f4)),
+              Image.asset('assets/images/logo.png', height: 120),
+              Center(
+                child: Text(
+                  'Chat App  ',
+                  style: TextStyle(
+                    fontSize: 32,
+                    color: Colors.white,
+                    fontFamily: 'Playwrite',
                   ),
                 ),
-              ],
-            ),
-            Spacer(flex: 4),
-          ],
+              ),
+
+              SizedBox(height: 90),
+              Row(
+                children: [
+                  Text(
+                    'REGISTER',
+                    style: TextStyle(fontSize: 24, color: Colors.white),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              CustomTextField(
+                onChanged: (data) {
+                  email = data;
+                },
+                hint: 'Enter Your Name',
+              ),
+              SizedBox(height: 10),
+              CustomTextField(
+                onChanged: (data) {
+                  password = data;
+                },
+                hint: 'Enter Your Password',
+              ),
+              SizedBox(height: 20),
+              CustomButon(
+                color: Colors.white,
+                onTap: () async {
+                  if (formKey.currentState!.validate()) {
+                    try {
+                      await registerUser();
+
+                      showSnackBar(context, 'Successful');
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'weak-password') {
+                        showSnackBar(context, 'weak-password');
+                      } else if (e.code == 'email-already-in-use') {
+                        showSnackBar(context, 'email-already-in-use');
+                      }
+                    } catch (ex) {
+                      showSnackBar(context, "There was an error");
+                    }
+                  } else {}
+                },
+                text: 'REGISTER',
+              ),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "already have an account ? ",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context, RegisterPage.id);
+                    },
+                    child: Text(
+                      'Login',
+                      style: TextStyle(color: Color(0xffade8f4)),
+                    ),
+                  ),
+                ],
+              ),
+              Spacer(flex: 4),
+            ],
+          ),
         ),
       ),
     );
