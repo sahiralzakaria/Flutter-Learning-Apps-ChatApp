@@ -5,8 +5,8 @@ import 'package:simplechatapp/pages/login_page.dart';
 import 'package:simplechatapp/pages/register_page.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();  // التأكد من تهيئة الـ bindings
-  await Firebase.initializeApp();  // تهيئة Firebase
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(const SimpleChatApp());
 }
