@@ -1,12 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:simplechatapp/constants.dart';
 import 'package:simplechatapp/widgets/custom_buton.dart';
 import 'package:simplechatapp/widgets/custom_text_field.dart';
 
 class RegisterPage extends StatelessWidget {
-  const RegisterPage({super.key});
+  RegisterPage({super.key});
 
   static String id = 'RegisterPage';
+
+  String? email;
+  String? password;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,11 +39,31 @@ class RegisterPage extends StatelessWidget {
               ],
             ),
             SizedBox(height: 20),
-            CustomTextField(hint: 'Enter Your Name'),
+            CustomTextField(
+              onChanged: (data) {
+                email = data;
+              },
+              hint: 'Enter Your Name',
+            ),
             SizedBox(height: 10),
-            CustomTextField(hint: 'Enter Your Password'),
+            CustomTextField(
+              onChanged: (data) {
+                password = data;
+              },
+              hint: 'Enter Your Password',
+            ),
             SizedBox(height: 20),
-            CustomButon(color: Colors.white, text: 'REGISTER'),
+            CustomButon(
+              color: Colors.white,
+              onTap: () async {
+                var auth = FirebaseAuth.instance;
+                UserCredential user = await auth.createUserWithEmailAndPassword(
+                  email: email!,
+                  password: password!,
+                );
+              },
+              text: 'REGISTER',
+            ),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
