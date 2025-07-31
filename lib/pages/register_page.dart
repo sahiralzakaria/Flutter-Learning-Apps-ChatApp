@@ -9,8 +9,8 @@ class RegisterPage extends StatelessWidget {
 
   static String id = 'RegisterPage';
 
-  String? email;
-  String? password;
+  String? ema;
+  String? pass;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,14 +41,14 @@ class RegisterPage extends StatelessWidget {
             SizedBox(height: 20),
             CustomTextField(
               onChanged: (data) {
-                email = data;
+                ema = data;
               },
               hint: 'Enter Your Name',
             ),
             SizedBox(height: 10),
             CustomTextField(
               onChanged: (data) {
-                password = data;
+                pass = data;
               },
               hint: 'Enter Your Password',
             ),
@@ -56,11 +56,11 @@ class RegisterPage extends StatelessWidget {
             CustomButon(
               color: Colors.white,
               onTap: () async {
-                var auth = FirebaseAuth.instance;
-                UserCredential user = await auth.createUserWithEmailAndPassword(
-                  email: email!,
-                  password: password!,
-                );
+                UserCredential user = await FirebaseAuth.instance
+                    .createUserWithEmailAndPassword(
+                      email: ema!,
+                      password: pass!,
+                    );
               },
               text: 'REGISTER',
             ),

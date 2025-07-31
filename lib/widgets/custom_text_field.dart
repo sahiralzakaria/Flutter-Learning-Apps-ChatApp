@@ -8,7 +8,8 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      onChanged: (value) {},
+      style: TextStyle(color: Colors.white),
+      onChanged: onChanged,
       decoration: InputDecoration(
         hintText: hint ?? " ",
         hintStyle: TextStyle(color: Colors.white),
