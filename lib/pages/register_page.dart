@@ -50,7 +50,7 @@ class RegisterPage extends StatelessWidget {
                 onChanged: (data) {
                   email = data;
                 },
-                hint: 'Enter Your Name',
+                hint: 'Enter Your Email',
               ),
               SizedBox(height: 10),
               CustomTextField(
