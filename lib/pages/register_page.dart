@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:simplechatapp/constants.dart';
 import 'package:simplechatapp/widgets/custom_buton.dart';
 import 'package:simplechatapp/widgets/custom_text_field.dart';
@@ -12,6 +13,8 @@ class RegisterPage extends StatelessWidget {
 
   String? email;
   String? password;
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,6 +67,7 @@ class RegisterPage extends StatelessWidget {
                 color: Colors.white,
                 onTap: () async {
                   if (formKey.currentState!.validate()) {
+                    isLoading = true;
                     try {
                       await registerUser();
 
@@ -77,6 +81,7 @@ class RegisterPage extends StatelessWidget {
                     } catch (ex) {
                       showSnackBar(context, "There was an error");
                     }
+                    isLoading = false;
                   } else {}
                 },
                 text: 'REGISTER',
@@ -100,7 +105,6 @@ class RegisterPage extends StatelessWidget {
                   ),
                 ],
               ),
-              Spacer(flex: 4),
             ],
           ),
         ),
