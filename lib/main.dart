@@ -24,7 +24,7 @@ class SimpleChatApp extends StatelessWidget {
         RegisterPage.id: (context) => RegisterPage(),
         ChatPage.id: (context) => ChatPage(),
       },
-      initialRoute: 'LoginPage',
+      initialRoute: LoginPage.id,
     );
   }
 }

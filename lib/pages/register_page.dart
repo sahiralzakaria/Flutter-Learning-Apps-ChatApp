@@ -39,7 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
               children: [
                 SizedBox(height: 90),
 
-                Image.asset('assets/images/logo.png', height: 120),
+                Image.asset(kLogo, height: 120),
                 Center(
                   child: Text(
                     'Chat App  ',

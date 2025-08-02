@@ -23,7 +23,18 @@ class ChatPage extends StatelessWidget {
         ),
       ),
 
-      body: ChatBubble(),
+      body: ListView(
+        children: [
+          ChatBubble(leftBubble: true, message: 'Hello'),
+          ChatBubble(leftBubble: false, message: 'Hi'),
+          ChatBubble(leftBubble: true, message: 'How are you'),
+          ChatBubble(leftBubble: false, message: 'I am fine and you ? '),
+          ChatBubble(leftBubble: true, message: 'welcome'),
+          ChatBubble(leftBubble: false, message: 'go from here'),
+          ChatBubble(leftBubble: true, message: 'why?'),
+          ChatBubble(leftBubble: false, message: 'I am tired'),
+        ],
+      ),
     );
   }
 }
