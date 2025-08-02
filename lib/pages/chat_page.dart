@@ -25,14 +25,41 @@ class ChatPage extends StatelessWidget {
 
       body: ListView(
         children: [
-          ChatBubble(leftBubble: true, message: 'Hello'),
-          ChatBubble(leftBubble: false, message: 'Hi'),
-          ChatBubble(leftBubble: true, message: 'How are you'),
-          ChatBubble(leftBubble: false, message: 'I am fine and you ? '),
-          ChatBubble(leftBubble: true, message: 'welcome'),
-          ChatBubble(leftBubble: false, message: 'go from here'),
-          ChatBubble(leftBubble: true, message: 'why?'),
-          ChatBubble(leftBubble: false, message: 'I am tired'),
+          SizedBox(height: 30),
+
+          ChatBubble(leftBubble: true, message: 'Hey there! Long time no see!'),
+
+          ChatBubble(
+            leftBubble: false,
+            message: 'Hey! Yeah, it’s been a while. How have you been?',
+          ),
+
+          ChatBubble(
+            leftBubble: true,
+            message: 'I’m good, just busy with work. What about you?',
+          ),
+
+          ChatBubble(
+            leftBubble: false,
+            message: 'Same here. Life’s been hectic lately.',
+          ),
+
+          ChatBubble(
+            leftBubble: true,
+            message: 'I get that. We should catch up sometime soon.',
+          ),
+
+          ChatBubble(
+            leftBubble: false,
+            message: 'Totally! Maybe this weekend?',
+          ),
+
+          ChatBubble(leftBubble: true, message: 'Sounds perfect. Let’s do it!'),
+
+          ChatBubble(
+            leftBubble: false,
+            message: 'Great! I’ll text you the details later.',
+          ),
         ],
       ),
     );

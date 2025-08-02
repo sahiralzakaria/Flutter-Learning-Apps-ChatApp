@@ -16,25 +16,25 @@ class ChatBubble extends StatelessWidget {
     return Align(
       alignment: leftBubble ? Alignment.centerLeft : Alignment.centerRight,
       child: Container(
-        margin: EdgeInsets.all(15),
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        margin: EdgeInsets.only(left: 12, right: 12, bottom: 10),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.7,
-          minHeight: 40,
+          minHeight: 50,
+          minWidth: 60,
         ),
         decoration: BoxDecoration(
           color: leftBubble ? kPrimaryColor : kSecondColor,
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(25),
-            topRight: Radius.circular(25),
-            bottomRight: Radius.circular(leftBubble ? 25 : 0),
-            bottomLeft: Radius.circular(leftBubble ? 0 : 25),
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+            bottomRight: Radius.circular(leftBubble ? 20 : 0),
+            bottomLeft: Radius.circular(leftBubble ? 0 : 20),
           ),
         ),
         child: Text(
           message,
           style: TextStyle(color: Colors.white, fontSize: 15),
-          textAlign: leftBubble ? TextAlign.left : TextAlign.right,
         ),
       ),
     );

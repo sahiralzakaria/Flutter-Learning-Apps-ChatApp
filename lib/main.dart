@@ -20,6 +20,7 @@ class SimpleChatApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
+        '/': (context) => LoginPage(),
         LoginPage.id: (context) => LoginPage(),
         RegisterPage.id: (context) => RegisterPage(),
         ChatPage.id: (context) => ChatPage(),
