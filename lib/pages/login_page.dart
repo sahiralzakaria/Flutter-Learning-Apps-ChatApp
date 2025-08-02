@@ -4,8 +4,8 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:simplechatapp/constants.dart';
 import 'package:simplechatapp/pages/register_page.dart';
 import 'package:simplechatapp/widgets/custom_buton.dart';
-import 'package:simplechatapp/widgets/custom_text_field.dart';
-import 'package:simplechatapp/widgets/show_snack_bar.dart';
+import 'package:simplechatapp/widgets/custom_text_form_field.dart';
+import 'package:simplechatapp/helper/show_snack_bar.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({super.key});
@@ -58,9 +58,9 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
                 SizedBox(height: 20),
-                CustomTextField(hint: 'Enter Your Name'),
+                CustomTextFormField(hint: 'Enter Your Name'),
                 SizedBox(height: 10),
-                CustomTextField(hint: 'Enter Your Password'),
+                CustomTextFormField(hint: 'Enter Your Password'),
                 SizedBox(height: 20),
                 CustomButon(
                   onTap: () async {
@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
 
                       setState(() {});
                       try {
-                        await registerUser();
+                        await loginUser();
 
                         showSnackBar(context, 'Successful');
                       } on FirebaseAuthException catch (e) {

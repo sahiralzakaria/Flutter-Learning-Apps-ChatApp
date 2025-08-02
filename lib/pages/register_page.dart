@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:simplechatapp/constants.dart';
 import 'package:simplechatapp/widgets/custom_buton.dart';
-import 'package:simplechatapp/widgets/custom_text_field.dart';
+import 'package:simplechatapp/widgets/custom_text_form_field.dart';
 import 'package:simplechatapp/helper/show_snack_bar.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -60,14 +60,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   ],
                 ),
                 SizedBox(height: 20),
-                CustomTextField(
+                CustomTextFormField(
                   onChanged: (data) {
                     email = data;
                   },
                   hint: 'Enter Your Email',
                 ),
                 SizedBox(height: 10),
-                CustomTextField(
+                CustomTextFormField(
                   onChanged: (data) {
                     password = data;
                   },
