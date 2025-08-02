@@ -32,7 +32,7 @@ class ChatPage extends StatelessWidget {
               },
             ),
           ),
-          SizedBox(height: 100),
+          Padding(padding: const EdgeInsets.all(16), child: TextField()),
         ],
       ),
     );
