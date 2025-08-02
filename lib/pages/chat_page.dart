@@ -25,14 +25,32 @@ class ChatPage extends StatelessWidget {
 
       body: Column(
         children: [
+          SizedBox(height: 15),
           Expanded(
             child: ListView.builder(
+              itemCount: 18,
               itemBuilder: (context, index) {
                 return ChatBubble(leftBubble: true, message: 'message');
               },
             ),
           ),
-          Padding(padding: const EdgeInsets.all(16), child: TextField()),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: TextField(
+              style: TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                hint: Text('Send your message'),
+                suffixIcon: Icon(Icons.send, color: kPrimaryColor),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: kSecondColor),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: BorderSide(color: kPrimaryColor),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
