@@ -10,7 +10,7 @@ import 'package:simplechatapp/helper/show_snack_bar.dart';
 class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
-  static String id = 'LoginPage';
+  static String id = 'Register page';
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -20,8 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   bool isLoading = false;
 
   GlobalKey<FormState> formKey = GlobalKey();
-
   String? email, password;
+
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
@@ -58,9 +58,19 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
                 SizedBox(height: 20),
-                CustomTextFormField(hint: 'Enter Your Name'),
+                CustomTextFormField(
+                  hint: 'Enter Your E-mail',
+                  onChanged: (data) {
+                    email = data;
+                  },
+                ),
                 SizedBox(height: 10),
-                CustomTextFormField(hint: 'Enter Your Password'),
+                CustomTextFormField(
+                  hint: 'Enter Your Password',
+                  onChanged: (data) {
+                    password = data;
+                  },
+                ),
                 SizedBox(height: 20),
                 CustomButon(
                   onTap: () async {
@@ -73,10 +83,10 @@ class _LoginPageState extends State<LoginPage> {
 
                         showSnackBar(context, 'Successful');
                       } on FirebaseAuthException catch (e) {
-                        if (e.code == 'weak-password') {
-                          showSnackBar(context, 'weak-password');
-                        } else if (e.code == 'email-already-in-use') {
-                          showSnackBar(context, 'email-already-in-use');
+                        if (e.code == 'user-not-found') {
+                          showSnackBar(context, 'user-not-found');
+                        } else if (e.code == 'wrong-password') {
+                          showSnackBar(context, 'wrong-password');
                         }
                       } catch (ex) {
                         showSnackBar(context, "There was an error");

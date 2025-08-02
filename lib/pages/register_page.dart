@@ -112,7 +112,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pop(context, RegisterPage.id);
+                        Navigator.pop(context, RegisterPage);
                       },
                       child: Text(
                         'Login',
