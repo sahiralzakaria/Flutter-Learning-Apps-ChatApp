@@ -10,7 +10,7 @@ import 'package:simplechatapp/helper/show_snack_bar.dart';
 class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
-  static String id = 'Register page';
+  static String id = 'LoginPage';
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -20,8 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   bool isLoading = false;
 
   GlobalKey<FormState> formKey = GlobalKey();
-  String? email, password;
 
+  String? email, password;
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
@@ -80,22 +80,23 @@ class _LoginPageState extends State<LoginPage> {
                       setState(() {});
                       try {
                         await loginUser();
-
                         showSnackBar(context, 'Successful');
                       } on FirebaseAuthException catch (e) {
-                        if (e.code == 'user-not-found') {
-                          showSnackBar(context, 'user-not-found');
-                        } else if (e.code == 'wrong-password') {
-                          showSnackBar(context, 'wrong-password');
+                        if (e.code == 'invalid-email') {
+                          showSnackBar(context, 'Invalid email address.');
+                        } else if (e.code == 'invalid-credential') {
+                          showSnackBar(
+                            context,
+                            'Email or password is incorrect.',
+                          );
+                        } else {
+                          showSnackBar(context, 'Authentication error');
                         }
-                      } catch (ex) {
-                        showSnackBar(context, "There was an error");
                       }
-
                       setState(() {
                         isLoading = false;
                       });
-                    } else {}
+                    }
                   },
 
                   color: Colors.white,
@@ -129,7 +130,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> loginUser() async {
-    UserCredential user = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email!, password: password!);
+    final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email!,
+      password: password!,
+    );
   }
 }
