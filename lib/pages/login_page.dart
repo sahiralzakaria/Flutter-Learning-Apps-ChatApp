@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:simplechatapp/constants.dart';
+import 'package:simplechatapp/pages/chat_page.dart';
 import 'package:simplechatapp/pages/register_page.dart';
 import 'package:simplechatapp/widgets/custom_buton.dart';
 import 'package:simplechatapp/widgets/custom_text_form_field.dart';
@@ -80,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                       setState(() {});
                       try {
                         await loginUser();
-                        showSnackBar(context, 'Successful');
+                        Navigator.pushNamed(context, ChatPage.id);
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'invalid-email') {
                           showSnackBar(context, 'Invalid email address.');
