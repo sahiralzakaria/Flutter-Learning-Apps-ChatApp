@@ -67,6 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: 10),
                 CustomTextFormField(
+                  obscureText: true,
                   hint: 'Enter Your Password',
                   onChanged: (data) {
                     password = data;
@@ -81,7 +82,11 @@ class _LoginPageState extends State<LoginPage> {
                       setState(() {});
                       try {
                         await loginUser();
-                        Navigator.pushNamed(context, ChatPage.id);
+                        Navigator.pushNamed(
+                          context,
+                          ChatPage.id,
+                          arguments: email,
+                        );
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'invalid-email') {
                           showSnackBar(context, 'Invalid email address.');

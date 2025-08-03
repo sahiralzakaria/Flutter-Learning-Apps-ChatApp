@@ -17,8 +17,10 @@ class ChatPage extends StatelessWidget {
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final String emailShort =
+        ModalRoute.of(context)!.settings.arguments as String;
     return StreamBuilder<QuerySnapshot>(
-      stream: messages.orderBy('createdAt').snapshots(),
+      stream: messages.orderBy('createdAt', descending: true).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<Message> messagesList = [];
@@ -46,18 +48,24 @@ class ChatPage extends StatelessWidget {
                 SizedBox(height: 15),
                 Expanded(
                   child: ListView.builder(
+                    reverse: true,
                     controller: _controller,
                     itemCount: messagesList.length,
                     itemBuilder: (context, index) {
-                      return ChatBubble(
-                        leftBubble: true,
-                        message: messagesList[index].message,
-                      );
+                      return messagesList[index].id == emailShort
+                          ? ChatBubble(
+                              leftBubble: false,
+                              message: messagesList[index].message,
+                            )
+                          : ChatBubble(
+                              leftBubble: true,
+                              message: messagesList[index].message,
+                            );
                     },
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(6),
+                  padding: const EdgeInsets.all(16),
                   child: TextField(
                     controller: controller,
 
@@ -66,13 +74,14 @@ class ChatPage extends StatelessWidget {
                         messages.add({
                           'message': value,
                           'createdAt': DateTime.now(),
+                          'id': emailShort,
                         });
                         controller.clear();
 
                         _controller.animateTo(
-                          _controller.position.maxScrollExtent,
-                          curve: Curves.easeOut,
-                          duration: Duration(seconds: 1),
+                          0,
+                          curve: Curves.fastOutSlowIn,
+                          duration: Duration(milliseconds: 300),
                         );
                       }
                     },
