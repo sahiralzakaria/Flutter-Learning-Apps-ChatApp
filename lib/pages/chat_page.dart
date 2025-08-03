@@ -15,6 +15,24 @@ class ChatPage extends StatelessWidget {
   );
 
   TextEditingController controller = TextEditingController();
+
+  void sendMessage(String emailShort) {
+    if (controller.text.trim().isNotEmpty) {
+      messages.add({
+        'message': controller.text,
+        'createdAt': DateTime.now(),
+        'id': emailShort,
+      });
+      controller.clear();
+
+      _controller.animateTo(
+        0,
+        curve: Curves.fastOutSlowIn,
+        duration: Duration(milliseconds: 300),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final String emailShort =
@@ -54,11 +72,11 @@ class ChatPage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return messagesList[index].id == emailShort
                           ? ChatBubble(
-                              leftBubble: false,
+                              leftBubble: true,
                               message: messagesList[index].message,
                             )
                           : ChatBubble(
-                              leftBubble: true,
+                              leftBubble: false,
                               message: messagesList[index].message,
                             );
                     },
@@ -68,27 +86,11 @@ class ChatPage extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   child: TextField(
                     controller: controller,
-
-                    onSubmitted: (value) {
-                      if (value.trim().isNotEmpty) {
-                        messages.add({
-                          'message': value,
-                          'createdAt': DateTime.now(),
-                          'id': emailShort,
-                        });
-                        controller.clear();
-
-                        _controller.animateTo(
-                          0,
-                          curve: Curves.fastOutSlowIn,
-                          duration: Duration(milliseconds: 300),
-                        );
-                      }
-                    },
                     style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(
                       hint: Text('Send your message'),
                       suffixIcon: GestureDetector(
+                        onTap: () => sendMessage(emailShort),
                         child: Icon(Icons.send, color: kPrimaryColor),
                       ),
                       focusedBorder: OutlineInputBorder(
@@ -120,42 +122,3 @@ class ChatPage extends StatelessWidget {
     );
   }
 }
-
-
-
-
-// SizedBox(height: 30),
-
-//           ChatBubble(leftBubble: true, message: 'Hey there! Long time no see!'),
-
-//           ChatBubble(
-//             leftBubble: false,
-//             message: 'Hey! Yeah, it’s been a while. How have you been?',
-//           ),
-
-//           ChatBubble(
-//             leftBubble: true,
-//             message: 'I’m good, just busy with work. What about you?',
-//           ),
-
-//           ChatBubble(
-//             leftBubble: false,
-//             message: 'Same here. Life’s been hectic lately.',
-//           ),
-
-//           ChatBubble(
-//             leftBubble: true,
-//             message: 'I get that. We should catch up sometime soon.',
-//           ),
-
-//           ChatBubble(
-//             leftBubble: false,
-//             message: 'Totally! Maybe this weekend?',
-//           ),
-
-//           ChatBubble(leftBubble: true, message: 'Sounds perfect. Let’s do it!'),
-
-//           ChatBubble(
-//             leftBubble: false,
-//             message: 'Great! I’ll text you the details later.',
-//           ),

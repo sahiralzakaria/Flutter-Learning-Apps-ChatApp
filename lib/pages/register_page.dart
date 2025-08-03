@@ -69,6 +69,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 SizedBox(height: 10),
                 CustomTextFormField(
+                  obscureText: true,
                   onChanged: (data) {
                     password = data;
                   },
