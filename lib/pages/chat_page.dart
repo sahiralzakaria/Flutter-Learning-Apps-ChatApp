@@ -8,15 +8,31 @@ class ChatPage extends StatelessWidget {
   ChatPage({super.key});
 
   static String id = 'ChatPage';
+  final ScrollController _scrollController = ScrollController();
+
   CollectionReference messages = FirebaseFirestore.instance.collection(
     'messages',
   );
 
   TextEditingController controller = TextEditingController();
+
+  // دالة للانتقال إلى آخر الصفحة
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: messages.snapshots(),
+      stream: messages.orderBy('createdAt').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<Message> messagesList = [];
@@ -24,6 +40,16 @@ class ChatPage extends StatelessWidget {
           for (int i = 0; i < snapshot.data!.docs.length; i++) {
             messagesList.add(Message.fromJson(snapshot.data!.docs[i]));
           }
+
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (_scrollController.hasClients) {
+              _scrollController.animateTo(
+                _scrollController.position.maxScrollExtent,
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeOut,
+              );
+            }
+          });
 
           return Scaffold(
             appBar: AppBar(
@@ -38,40 +64,87 @@ class ChatPage extends StatelessWidget {
                 ],
               ),
             ),
-
             body: Column(
               children: [
-                SizedBox(height: 15),
+                SizedBox(height: 20),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: messagesList.length,
-                    itemBuilder: (context, index) {
-                      return ChatBubble(
-                        leftBubble: true,
-                        message: messagesList[index].message,
-                      );
-                    },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: messagesList.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: ChatBubble(
+                            leftBubble: true,
+                            message: messagesList[index].message,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: TextField(
-                    controller: controller,
-                    onSubmitted: (value) {
-                      messages.add({'message': value});
-                      controller.clear();
-                    },
-                    style: TextStyle(color: Colors.black),
-                    decoration: InputDecoration(
-                      hint: Text('Send your message'),
-                      suffixIcon: Icon(Icons.send, color: kPrimaryColor),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: kSecondColor),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: kPrimaryColor),
-                      ),
+                Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(color: kPrimaryColor),
+                  child: SafeArea(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: controller,
+                            onSubmitted: (value) async {
+                              if (value.trim().isNotEmpty) {
+                                await messages.add({
+                                  'message': value.trim(),
+                                  'createdAt': DateTime.now(),
+                                });
+
+                                controller.clear();
+
+                                _scrollToBottom();
+                              }
+                            },
+                            style: TextStyle(color: Colors.black),
+                            decoration: InputDecoration(
+                              hintText: 'Send your message',
+                              hintStyle: TextStyle(color: Colors.white),
+                              suffixIcon: GestureDetector(
+                                onTap: () async {
+                                  String value = controller.text;
+                                  if (value.trim().isNotEmpty) {
+                                    await messages.add({
+                                      'message': value.trim(),
+                                      'createdAt': DateTime.now(),
+                                    });
+                                    controller.clear();
+                                    _scrollToBottom();
+                                  }
+                                },
+                                child: Icon(Icons.send, color: kSecondColor),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25),
+                                borderSide: BorderSide(
+                                  color: kSecondColor,
+                                  width: 2,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25),
+                                borderSide: BorderSide(color: kPrimaryColor),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 12,
+                              ),
+                            ),
+                            maxLines: null,
+                            textInputAction: TextInputAction.send,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -79,7 +152,11 @@ class ChatPage extends StatelessWidget {
             ),
           );
         } else {
-          return Text('data');
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(color: kPrimaryColor),
+            ),
+          );
         }
       },
     );
