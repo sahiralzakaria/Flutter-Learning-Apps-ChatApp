@@ -8,7 +8,7 @@ class ChatPage extends StatelessWidget {
   ChatPage({super.key});
 
   static String id = 'ChatPage';
-  final ScrollController _scrollController = ScrollController();
+  final _controller = ScrollController();
 
   CollectionReference messages = FirebaseFirestore.instance.collection(
     'messages',
@@ -46,7 +46,7 @@ class ChatPage extends StatelessWidget {
                 SizedBox(height: 15),
                 Expanded(
                   child: ListView.builder(
-                    controller: _scrollController,
+                    controller: _controller,
                     itemCount: messagesList.length,
                     itemBuilder: (context, index) {
                       return ChatBubble(
@@ -69,10 +69,10 @@ class ChatPage extends StatelessWidget {
                         });
                         controller.clear();
 
-                        _scrollController.animateTo(
-                          _scrollController.position.maxScrollExtent,
+                        _controller.animateTo(
+                          _controller.position.maxScrollExtent,
                           curve: Curves.easeOut,
-                          duration: const Duration(milliseconds: 500),
+                          duration: Duration(seconds: 1),
                         );
                       }
                     },
