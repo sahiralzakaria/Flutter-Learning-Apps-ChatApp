@@ -15,8 +15,8 @@ class ChatPage extends StatelessWidget {
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<QuerySnapshot>(
-      future: messages.get(),
+    return StreamBuilder<QuerySnapshot>(
+      stream: messages.snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<Message> messagesList = [];
@@ -44,9 +44,12 @@ class ChatPage extends StatelessWidget {
                 SizedBox(height: 15),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: 10,
+                    itemCount: messagesList.length,
                     itemBuilder: (context, index) {
-                      return ChatBubble(leftBubble: true, message: 'saher');
+                      return ChatBubble(
+                        leftBubble: true,
+                        message: messagesList[index].message,
+                      );
                     },
                   ),
                 ),
