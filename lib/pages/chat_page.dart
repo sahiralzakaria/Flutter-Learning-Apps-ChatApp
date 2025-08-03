@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simplechatapp/constants.dart';
+import 'package:simplechatapp/models/message.dart';
 import 'package:simplechatapp/widgets/chat_bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -11,55 +12,73 @@ class ChatPage extends StatelessWidget {
     'messages',
   );
 
+  TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: kPrimaryColor,
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(kLogo, height: 40),
-            Text('Chat App', style: TextStyle(color: Colors.white)),
-          ],
-        ),
-      ),
+    return FutureBuilder<QuerySnapshot>(
+      future: messages.get(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<Message> messagesList = [];
 
-      body: Column(
-        children: [
-          SizedBox(height: 15),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 18,
-              itemBuilder: (context, index) {
-                return ChatBubble(leftBubble: true, message: 'message');
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: TextField(
-              onSubmitted: (value) {
-                messages.add({'message': value});
-              },
-              style: TextStyle(color: Colors.black),
-              decoration: InputDecoration(
-                hint: Text('Send your message'),
-                suffixIcon: Icon(Icons.send, color: kPrimaryColor),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: kSecondColor),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(color: kPrimaryColor),
-                ),
+          for (int i = 0; i < snapshot.data!.docs.length; i++) {
+            messagesList.add(Message.fromJson(snapshot.data!.docs[i]));
+          }
+
+          return Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: kPrimaryColor,
+              iconTheme: IconThemeData(color: Colors.white),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(kLogo, height: 40),
+                  Text('Chat App', style: TextStyle(color: Colors.white)),
+                ],
               ),
             ),
-          ),
-        ],
-      ),
+
+            body: Column(
+              children: [
+                SizedBox(height: 15),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return ChatBubble(leftBubble: true, message: 'saher');
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: TextField(
+                    controller: controller,
+                    onSubmitted: (value) {
+                      messages.add({'message': value});
+                      controller.clear();
+                    },
+                    style: TextStyle(color: Colors.black),
+                    decoration: InputDecoration(
+                      hint: Text('Send your message'),
+                      suffixIcon: Icon(Icons.send, color: kPrimaryColor),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: kSecondColor),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide(color: kPrimaryColor),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else {
+          return Text('data');
+        }
+      },
     );
   }
 }
