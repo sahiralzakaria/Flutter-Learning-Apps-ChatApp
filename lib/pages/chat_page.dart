@@ -15,20 +15,6 @@ class ChatPage extends StatelessWidget {
   );
 
   TextEditingController controller = TextEditingController();
-
-  // دالة للانتقال إلى آخر الصفحة
-  void _scrollToBottom() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -40,16 +26,6 @@ class ChatPage extends StatelessWidget {
           for (int i = 0; i < snapshot.data!.docs.length; i++) {
             messagesList.add(Message.fromJson(snapshot.data!.docs[i]));
           }
-
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (_scrollController.hasClients) {
-              _scrollController.animateTo(
-                _scrollController.position.maxScrollExtent,
-                duration: Duration(milliseconds: 300),
-                curve: Curves.easeOut,
-              );
-            }
-          });
 
           return Scaffold(
             appBar: AppBar(
@@ -64,87 +40,60 @@ class ChatPage extends StatelessWidget {
                 ],
               ),
             ),
+
             body: Column(
               children: [
-                SizedBox(height: 20),
+                SizedBox(height: 15),
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      itemCount: messagesList.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0),
-                          child: ChatBubble(
-                            leftBubble: true,
-                            message: messagesList[index].message,
-                          ),
-                        );
-                      },
-                    ),
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: messagesList.length,
+                    itemBuilder: (context, index) {
+                      return ChatBubble(
+                        leftBubble: true,
+                        message: messagesList[index].message,
+                      );
+                    },
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(color: kPrimaryColor),
-                  child: SafeArea(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: controller,
-                            onSubmitted: (value) async {
-                              if (value.trim().isNotEmpty) {
-                                await messages.add({
-                                  'message': value.trim(),
-                                  'createdAt': DateTime.now(),
-                                });
+                Padding(
+                  padding: const EdgeInsets.all(6),
+                  child: TextField(
+                    controller: controller,
 
-                                controller.clear();
+                    onSubmitted: (value) {
+                      if (value.trim().isNotEmpty) {
+                        messages.add({
+                          'message': value,
+                          'createdAt': DateTime.now(),
+                        });
+                        controller.clear();
 
-                                _scrollToBottom();
-                              }
-                            },
-                            style: TextStyle(color: Colors.black),
-                            decoration: InputDecoration(
-                              hintText: 'Send your message',
-                              hintStyle: TextStyle(color: Colors.white),
-                              suffixIcon: GestureDetector(
-                                onTap: () async {
-                                  String value = controller.text;
-                                  if (value.trim().isNotEmpty) {
-                                    await messages.add({
-                                      'message': value.trim(),
-                                      'createdAt': DateTime.now(),
-                                    });
-                                    controller.clear();
-                                    _scrollToBottom();
-                                  }
-                                },
-                                child: Icon(Icons.send, color: kSecondColor),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(25),
-                                borderSide: BorderSide(
-                                  color: kSecondColor,
-                                  width: 2,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(25),
-                                borderSide: BorderSide(color: kPrimaryColor),
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 12,
-                              ),
-                            ),
-                            maxLines: null,
-                            textInputAction: TextInputAction.send,
-                          ),
-                        ),
-                      ],
+                        _scrollController.animateTo(
+                          _scrollController.position.maxScrollExtent,
+                          curve: Curves.easeOut,
+                          duration: const Duration(milliseconds: 500),
+                        );
+                      }
+                    },
+                    style: TextStyle(color: Colors.black),
+                    decoration: InputDecoration(
+                      hint: Text('Send your message'),
+                      suffixIcon: GestureDetector(
+                        child: Icon(Icons.send, color: kPrimaryColor),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25),
+                        borderSide: BorderSide(color: kSecondColor, width: 2),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25),
+                        borderSide: BorderSide(color: kPrimaryColor),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 12,
+                      ),
                     ),
                   ),
                 ),
