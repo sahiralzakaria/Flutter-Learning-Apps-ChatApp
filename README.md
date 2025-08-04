@@ -79,15 +79,6 @@ lib/
 
 ---
 
-## 📌 To Do
-
-- Add push notifications  
-- Add message reactions or emoji picker  
-- Enable chat image/file sharing  
-- Improve message sending UX with animations  
-
----
-
 ## 👨‍💻 Author
 
 **Sahir Zakaria**
