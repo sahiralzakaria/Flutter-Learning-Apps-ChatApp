@@ -33,6 +33,7 @@ A sleek and responsive chat application built with **Flutter** and **Firebase**.
 - **Cloud Firestore**  
 - **ModalProgressHUD** for loading overlays  
 
+
 ---
 
 ## 📂 Project Structure
