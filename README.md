@@ -22,6 +22,7 @@ A sleek and responsive chat application built with **Flutter** and **Firebase**.
   <img src="assets/share/3.png" width="250" />
 </p>
 
+
 ---
 
 ## 🛠️ Technologies Used
