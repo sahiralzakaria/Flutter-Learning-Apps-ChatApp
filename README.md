@@ -2,7 +2,6 @@
 
 A sleek and responsive chat application built with **Flutter** and **Firebase**. The app allows users to register, log in, and exchange real-time messages using Firebase Authentication and Cloud Firestore.
 
-
 ---
 
 ## 🚀 Features
