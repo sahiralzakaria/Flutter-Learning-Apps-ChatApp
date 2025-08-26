@@ -4,6 +4,7 @@ A sleek and responsive chat application built with **Flutter** and **Firebase**.
 
 ---
 
+
 ## 🚀 Features
 
 - 🔐 Register and login securely with **Firebase Authentication**  
