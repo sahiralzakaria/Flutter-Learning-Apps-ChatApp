@@ -35,6 +35,7 @@ A sleek and responsive chat application built with **Flutter** and **Firebase**.
 ---
 
 
+
 ## 📂 Project Structure
 
 ```
