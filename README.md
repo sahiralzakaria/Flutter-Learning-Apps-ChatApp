@@ -74,6 +74,7 @@ lib/
      ```
    - The CLI will handle linking your Firebase project, generating config files, and placing them correctly in your project.
 
+
 4. **Run the app**:
    ```bash
    flutter run
