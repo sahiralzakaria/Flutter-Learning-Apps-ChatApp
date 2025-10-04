@@ -61,6 +61,7 @@ lib/
    ```bash
    flutter pub get
    ```
+   
 
 3. **Set up Firebase**:
    - Go to [https://console.firebase.google.com/](https://console.firebase.google.com/) and create a new Firebase project
